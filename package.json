@@ -1,0 +1,33 @@
+{
+  "name": "hs",
+  "main": "index.js",
+  "version": "0.0.1",
+  "description": "hot swap node module",
+  "author": {
+    "name": "zhe.zhu",
+    "email": "zhe.zhu@alibaba-inc.com"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "homepage": "https://github.com/zhuzhe1983",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zhuzhe1983/hs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zhuzhe1983/hs/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "mocha": "*",
+    "expect.js" : "*"
+  },
+  "bin": {
+  },
+  "scripts": {
+    "test": "make test-cov"
+  }
+}
