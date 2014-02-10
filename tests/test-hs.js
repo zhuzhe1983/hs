@@ -53,12 +53,36 @@ describe('Hot Swap', function(){
   it('load', function(done){
     hs.load({
       "type": "interface",
-      "name": "anotherone",
+      "name": "anothertwo",
       "location": "../tests/mock/modules/two.js"
     }, function(obj){
       var output = obj.test();
       expect(output).to.be('two');
       done();
     });
+  });
+
+  it('status', function(done){
+    expect(hs.status('interface', 'one'))
+      .to
+      .be(hs.persistence['interface']['one']);
+
+    expect(hs.status('interface'))
+      .to
+      .be(hs.persistence['interface']);
+
+    expect(hs.status())
+      .to
+      .be(hs.persistence);
+
+    done();
+  });
+
+  it('plug object', function(done){
+    var OBJ = hs.plug( 'interface', 'obj', '../tests/mock/modules/obj.js' );
+    var obj = new OBJ({ 'key': 'init' });
+    obj.setOption({'key' : 'set'});
+    expect(obj.options['key']).to.be('set');
+    done();
   });
 });

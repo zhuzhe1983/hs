@@ -8,20 +8,22 @@ currently only support local path.
 var HS = require('hs');
 var hs = new HS();
 
-var one = hs.plug('test', 'one','../tests/mock/modules/one.js');
-var two = hs.plug('test', 'two','../tests/mock/modules/two.js');
+var one = hs.plug('test', 'one', '../tests/mock/modules/one.js');
+var two = hs.plug('test', 'two', '../tests/mock/modules/two.js');
 
-one.echo();
-two.echo();
+one.test();
+two.test();
 
-hs.unplug('test', 'two', function(type, name){
-  console.log(type, name);
+hs.unplug('test', 'two', function(err, type, name){
+  hs.get('test', 'two', function(obj){
+    console.log(obj);
+  });
 });
 
 hs.unplug('test', 'two');
 
 try{
-  two.echo();
+  console.log(two.test());
 }catch(e){
   console.log(e);
 }
