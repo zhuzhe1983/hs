@@ -19,11 +19,14 @@
     "url": "https://github.com/zhuzhe1983/hs/issues"
   },
   "dependencies": {
+    "options-stream" : "*"
   },
   "devDependencies": {
+    "jscover" : "*",
     "coffee-script": "*",
+    "expect.js" : "*",
     "mocha": "*",
-    "expect.js" : "*"
+    "supertest" : "*"
   },
   "bin": {
   },

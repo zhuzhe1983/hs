@@ -1,5 +1,4 @@
-/tests/build
 /out/test
 .DS_Store
 /node_modules/
-persistence.js
+coverage.html

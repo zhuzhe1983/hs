@@ -1,17 +1,16 @@
 -RELEASE_DIR := out/release/
 -COVERAGE_DIR := out/test/
--RELEASE_COPY := lib bin
--COVERAGE_COPY := lib bin tests
+-RELEASE_COPY := lib
+-COVERAGE_COPY := lib tests
 
 
 -BIN_MOCHA := ./node_modules/.bin/mocha
 -BIN_JSCOVER := ./node_modules/.bin/jscover
 -BIN_COFFEE := ./node_modules/coffee-script/bin/coffee
--BIN_YAML := ./node_modules/.bin/yaml2json -sp
 
 -TESTS := $(shell find tests -type f -name test-*)
 
--COFFEE_LIB := $(shell find lib bin -type f -name '*.coffee')
+-COFFEE_LIB := $(shell find lib -type f -name '*.coffee')
 -COFFEE_TEST := $(shell find tests -type f -name 'test-*.coffee')
 
 -COFFEE_RELEASE := $(addprefix $(-RELEASE_DIR),$(-COFFEE_LIB) )
@@ -26,12 +25,7 @@
 
 default: dev
 
-json:
-	@echo "make package.json"
-	@$(-BIN_YAML) ./package.yaml
-
-
-dev: clean json
+dev: clean
 	@$(-BIN_MOCHA) \
 		--colors \
 		--compilers coffee:coffee-script \
@@ -40,7 +34,7 @@ dev: clean json
 		--watch \
 		$(-TESTS)
 
-test: clean json
+test: clean
 	@$(-BIN_MOCHA) \
 		--compilers coffee:coffee-script \
 		--reporter tap \
@@ -58,14 +52,10 @@ release: test
 	@echo "all codes in \"$(-RELEASE_DIR)\""
 
 
-test-cov: clean json
+test-cov: clean
 	@echo 'copy files'
 	@mkdir -p $(-COVERAGE_DIR)
 	@cp -r $(-COVERAGE_COPY) $(-COVERAGE_DIR)
-
-	@echo "compile coffee-script files"
-	@$(-BIN_COFFEE) -cb $(-COFFEE_COVERAGE)
-	@rm -f $(-COFFEE_COVERAGE)
 
 	@echo "generate coverage files"
 	@$(-BIN_JSCOVER) $(-COVERAGE_DIR)/lib $(-COVERAGE_DIR)/lib

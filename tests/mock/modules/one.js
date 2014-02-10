@@ -1,3 +1,3 @@
-exports.echo = function(){
-	console.log('1');
+exports.test = function(){
+  return "one";
 }
