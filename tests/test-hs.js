@@ -8,44 +8,52 @@ var HS       = require('../lib/hs.js');
 var expect   = require('expect.js');
 
 describe('Hot Swap', function(){
-  var hs = new HS({'root' : "./tests/mock/" });
+  var hs = new HS({'root' : __dirname });
   
   before = function(done){
     done();
   };
 
   it('plug', function(done){
-    hs.plug('interface', 'one', '../tests/mock/modules/one.js', function(obj){
+    hs.plug('interface', 'one', 'mock/modules/one.js', function(err, obj){
+      expect(err).to.be(null);
       var output = obj.test();
       expect(output).to.be('one');
       done();
     });
   });
 
-  it('get', function(done){
-    var two = hs.plug('interface', 'two', '../tests/mock/modules/one.js');
-    hs.get('interface', 'two', function(obj){
+
+  it('get callback', function(done){
+    hs.get('interface', 'one', function(err, obj){
+      expect(err).to.be(null);
       expect(obj).not.to.be(null);
       done();
     });
   });
 
+  it('get return', function(done){
+    expect(hs.get('interface', 'one')).not.to.be(null);
+    done();
+  });
+
   it('unplug', function(done){
-    var two = hs.plug('interface', 'two', '../tests/mock/modules/two.js');
-    hs.unplug('interface', 'two', function(err, type, name){
+    var two = hs.plug('interface', 'two', 'mock/modules/two.js');
+    hs.unplug('interface', 'two', function(err, plugin){
       expect(err).to.be(null);
-      hs.get('interface', 'two', function(obj){
+      expect(plugin).not.to.be(null);
+      hs.get('interface', 'two', function(err, obj){
+        expect(err).to.be(null);
         expect(obj).to.be(null);
         done();
       });
     });
   });
-
-  it('persist', function(done){
-    var hs_new = new HS({'root' : "./tests/mock/" });
-    hs_new.get('interface', 'one', function(obj){
-      var output = obj.test();
-      expect(output).to.be('one');
+  
+  it('unplug plugin which is not exsiting', function(done){
+    hs.unplug('interface', 'null', function(err, plugin){
+      expect(err).not.to.be(null);
+      expect(plugin).not.to.be(null);
       done();
     });
   });
@@ -54,32 +62,63 @@ describe('Hot Swap', function(){
     hs.load({
       "type": "interface",
       "name": "anothertwo",
-      "location": "../tests/mock/modules/two.js"
-    }, function(obj){
+      "location": "mock/modules/two.js"
+    }, function(err, obj){
       var output = obj.test();
       expect(output).to.be('two');
       done();
     });
   });
 
-  it('status', function(done){
-    expect(hs.status('interface', 'one'))
-      .to
-      .be(hs.persistence['interface']['one']);
+  it('load not exsit plugin', function(done){
+    hs.load({
+      "type": "interface",
+      "name": "null",
+      "location": "mock/modules/null.js"
+    }, function(err, obj){
+      expect(err).not.to.be(null);
+      expect(obj).to.be(null);
+      done();
+    });
+  });
 
-    expect(hs.status('interface'))
-      .to
-      .be(hs.persistence['interface']);
+  it('load err plugin', function(done){
+    hs.load({
+      "type": "interface",
+      "name": "null",
+      "location": "mock/modules/err.js"
+    }, function(err, obj){
+      expect(err).not.to.be(null);
+      expect(obj).to.be(null);
+      done();
+    });
+  });
 
-    expect(hs.status())
+  it('list return', function(done){
+    expect(hs.list('interface', 'one'))
       .to
-      .be(hs.persistence);
+      .be(hs.pool['interface']['one']);
+
+    expect(hs.list('interface'))
+      .to
+      .be(hs.pool['interface']);
+
+    expect(hs.list())
+      .to
+      .be(hs.pool);
 
     done();
   });
 
+  it('list callback', function(done){
+    hs.list('interface', 'one', function(err, list){
+      expect(list).not.to.be(null);
+      done();
+    });
+  });
+
   it('plug object', function(done){
-    var OBJ = hs.plug( 'interface', 'obj', '../tests/mock/modules/obj.js' );
+    var OBJ = hs.plug( 'interface', 'obj', 'mock/modules/obj.js' );
     var obj = new OBJ({ 'key': 'init' });
     obj.setOption({'key' : 'set'});
     expect(obj.options['key']).to.be('set');

@@ -1,1 +1,0 @@
-{"interface":{"one":{"type":"interface","name":"one","location":"../tests/mock/modules/one.js"},"two":{"type":"interface","name":"two","location":"../tests/mock/modules/two.js"},"anothertwo":{"type":"interface","name":"anothertwo","location":"../tests/mock/modules/two.js"},"obj":{"type":"interface","name":"obj","location":"../tests/mock/modules/obj.js"}}}

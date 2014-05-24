@@ -1,7 +1,7 @@
 {
   "name": "hs",
   "main": "index.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "hot swap node module",
   "author": {
     "name": "zhe.zhu",
@@ -10,7 +10,7 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "homepage": "https://github.com/zhuzhe1983",
+  "homepage": "https://github.com/zhuzhe1983/hs",
   "repository": {
     "type": "git",
     "url": "git://github.com/zhuzhe1983/hs.git"
